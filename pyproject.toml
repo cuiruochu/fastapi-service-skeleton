@@ -23,7 +23,15 @@ dependencies = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/myapp"]
+packages = ["src/modular_myapp", "src/layered_myapp"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "README.md",
+    "pyproject.toml",
+    "src/modular_myapp",
+    "src/layered_myapp",
+]
 
 [tool.uv]
 dev-dependencies = []
