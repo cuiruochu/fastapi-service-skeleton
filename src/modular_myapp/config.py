@@ -70,7 +70,7 @@ class LoggingSettings(BaseSettings):
     dir: str = "logs"
     file: str = "myapp.log"
     level: str = "INFO"
-    logger_name: str = "myapp"
+    logger_name: str = "modular_myapp"
     rotate_every_days: int = 10
     backup_count: int = 12
 

@@ -36,7 +36,7 @@ async def lifespan(app: FastAPI):
     - 关闭 Redis / MQ / HTTP 客户端
     - 注册监控或 tracing
     """
-    configure_logging()
+    logging_runtime = configure_logging()
     logger.info("应用启动", extra={"app_name": settings.app_name})
 
     await connect_mq()
@@ -49,6 +49,7 @@ async def lifespan(app: FastAPI):
         await close_redis_client()
         await close_mq()
         logger.info("应用关闭", extra={"app_name": settings.app_name})
+        logging_runtime.stop()
 
 
 def create_app() -> FastAPI:
