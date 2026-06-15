@@ -14,6 +14,7 @@ from starlette.staticfiles import StaticFiles
 from layered_myapp.api import api_router
 from layered_myapp.clients.http import close_http_client
 from layered_myapp.config import settings
+from layered_myapp.database.core import close_database
 from layered_myapp.exception_handlers import register_exception_handlers
 from layered_myapp.logging import configure_logging
 from layered_myapp.middleware.request_id import RequestIdMiddleware
@@ -33,7 +34,7 @@ async def lifespan(app: FastAPI):
     - 初始化持久化 HTTP 客户端
     - 初始化 MQ 长连接和发布 channel
     - 声明当前服务需要维护的 MQ exchange、queue、binding 和死信队列
-    - 关闭 Redis / MQ / HTTP 客户端
+    - 关闭数据库 / Redis / MQ / HTTP 客户端
     - 注册监控或 tracing
     """
     logging_runtime = configure_logging()
@@ -48,6 +49,7 @@ async def lifespan(app: FastAPI):
         await close_http_client()
         await close_redis_client()
         await close_mq()
+        await close_database()
         logger.info("应用关闭", extra={"app_name": settings.app_name})
         logging_runtime.stop()
 

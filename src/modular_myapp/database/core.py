@@ -76,3 +76,8 @@ SessionLocal = async_sessionmaker(
 )
 
 DbSession = AsyncSession
+
+
+async def close_database() -> None:
+    """关闭数据库连接池。"""
+    await engine.dispose()
