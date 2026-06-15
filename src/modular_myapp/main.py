@@ -14,7 +14,7 @@ from starlette.staticfiles import StaticFiles
 from modular_myapp.api import api_router
 from modular_myapp.clients.http import close_http_client
 from modular_myapp.config import settings
-from modular_myapp.database.core import close_database
+from modular_myapp.database import close_database
 from modular_myapp.exception_handlers import register_exception_handlers
 from modular_myapp.logging import configure_logging
 from modular_myapp.middleware.request_id import RequestIdMiddleware

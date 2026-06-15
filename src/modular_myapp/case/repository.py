@@ -5,9 +5,9 @@
 """
 
 from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from modular_myapp.database.core import DbSession
-from modular_myapp.database.deps import get_db_session
+from modular_myapp.database import get_db_session
 
 from .schemas import CaseCreate, CaseRead
 
@@ -15,7 +15,7 @@ from .schemas import CaseCreate, CaseRead
 class CaseRepository:
     """case 持久化仓储。"""
 
-    def __init__(self, db_session: DbSession):
+    def __init__(self, db_session: AsyncSession):
         self.db_session = db_session
 
     async def get(self, case_id: int) -> CaseRead:
@@ -28,7 +28,7 @@ class CaseRepository:
 
 
 def get_case_repository(
-    db_session: DbSession = Depends(get_db_session),
+    db_session: AsyncSession = Depends(get_db_session),
 ) -> CaseRepository:
     """提供 case repository 的 dependency 工厂函数。"""
     return CaseRepository(db_session=db_session)
