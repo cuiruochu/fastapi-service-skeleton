@@ -20,7 +20,6 @@ class SQLSettings(BaseSettings):
         extra="ignore",
     )
 
-    sqlalchemy_database_uri: str | None = None
     dialect: str = "postgresql"
     driver: str | None = "asyncpg"
     host: str = "127.0.0.1"
@@ -41,9 +40,6 @@ class SQLSettings(BaseSettings):
     @property
     def uri(self) -> str:
         """返回最终使用的 SQLAlchemy 连接串。"""
-        if self.sqlalchemy_database_uri:
-            return self.sqlalchemy_database_uri
-
         if self.dialect == "sqlite":
             if self.database == ":memory:":
                 return "sqlite+aiosqlite:///:memory:"
