@@ -39,19 +39,20 @@ async def lifespan(app: FastAPI):
     """
     logging_runtime = configure_logging()
     logger.info("应用启动", extra={"app_name": settings.app_name})
-
-    await connect_mq()
-    await declare_registered_mq_topologies()
-
     try:
+        await connect_mq()
+        await declare_registered_mq_topologies()
+
         yield
     finally:
-        await close_http_client()
-        await close_redis_client()
-        await close_mq()
-        await close_database()
-        logger.info("应用关闭", extra={"app_name": settings.app_name})
-        logging_runtime.stop()
+        try:
+            await close_http_client()
+            await close_redis_client()
+            await close_mq()
+            await close_database()
+        finally:
+            logger.info("应用关闭", extra={"app_name": settings.app_name})
+            logging_runtime.stop()
 
 
 def create_app() -> FastAPI:
